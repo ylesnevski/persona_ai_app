@@ -7,7 +7,7 @@ template = """
 INSTRUCTION:
 You will be given a persona and a message.
 Rewrite the text as if the persona is the one who is
-writing or saying this.
+writing or saying this. Make your response around 100 tokens.
 
 EXAMPLE:
 

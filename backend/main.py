@@ -20,6 +20,6 @@ class ChatRequest(BaseModel):
 
 
 @app.post("/chat")
-async def chat(request: ChatRequest):
+def chat(request: ChatRequest):
     response = get_response(request.persona, request.message)
     return {"response": response}
