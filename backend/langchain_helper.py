@@ -3,7 +3,7 @@ from typing import Tuple
 
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
-from pydantic_core._pydantic_core import ValidationError
+from pydantic import ValidationError
 
 template = """
 INSTRUCTION:
