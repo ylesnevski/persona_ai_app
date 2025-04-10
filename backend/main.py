@@ -24,7 +24,8 @@ class ChatResponse(BaseModel):
     response: str
 
 
-@app.post("/chat", response_model=ChatResponse)
+@app.post("/chat", response_model=ChatResponse,
+          summary=f" Rewrite text as persona.")
 def chat(request: ChatRequest):
     response = get_response(request.persona, request.message)
     return JSONResponse(
