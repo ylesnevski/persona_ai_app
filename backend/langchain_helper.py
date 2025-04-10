@@ -45,6 +45,8 @@ def get_response(persona: str, message: str) -> Tuple[str, int]:
         return response.content, 200
     except ValidationError as e:
         return str(e), 403
+    except Exception as e:
+        return str(e), 500
 
 
 # You can use the same file to test
