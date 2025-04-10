@@ -16,8 +16,8 @@ app.add_middleware(
 
 
 class ChatRequest(BaseModel):
-    persona: str = Field(..., min_length=1)
-    message: str = Field(..., min_length=1)
+    persona: str = Field(min_length=1)
+    message: str = Field(min_length=1)
 
 
 class ChatResponse(BaseModel):

@@ -1,9 +1,11 @@
+import http
 import os
 from typing import Tuple
 
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
-from pydantic import ValidationError
+from openai import AuthenticationError
+
 
 template = """
 INSTRUCTION:
@@ -43,10 +45,10 @@ def get_response(persona: str, message: str) -> Tuple[str, int]:
         llm_chain = prompt | llm
         response = llm_chain.invoke({"persona": persona, "message": message})
         return response.content, 200
-    except ValidationError as e:
-        return str(e), 403
+    except AuthenticationError as ae:
+        return f"You should enter a valid OPEN AI API key: {str(ae)}", http.HTTPStatus.UNAUTHORIZED
     except Exception as e:
-        return str(e), 500
+        return f"A general error occurred: {str(e)}", http.HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 # You can use the same file to test
