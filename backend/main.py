@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from langchain_helper import get_response
+from backend.langchain_helper import get_response
 
 app = FastAPI()
 
@@ -22,4 +22,5 @@ class ChatRequest(BaseModel):
 @app.post("/chat")
 def chat(request: ChatRequest):
     response = get_response(request.persona, request.message)
-    return {"response": response}
+    # return response
+    return {"response": response[0]}

@@ -19,11 +19,8 @@ COPY pyproject.toml poetry.lock* /app/
 # Install project dependencies
 RUN poetry install --no-root --no-interaction --no-ansi
 
-# Copy the rest of your app
-COPY . /app
-
 # Expose the port
 EXPOSE 8000
 
 # Run FastAPI with uvicorn
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

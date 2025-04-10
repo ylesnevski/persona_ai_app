@@ -1,7 +1,9 @@
 import os
+from typing import Tuple
 
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
+from pydantic_core._pydantic_core import ValidationError
 
 template = """
 INSTRUCTION:
@@ -24,22 +26,25 @@ MESSAGE:
 REWRITTEN TEXT:
 """
 
-prompt = PromptTemplate(
-    input_variables=["persona", "message"],
-    template=template
-)
-llm = ChatOpenAI(
-    model="gpt-4o",
-    openai_api_key=os.getenv("OPENAI_API_KEY"),
-    temperature=0.7,
-    max_tokens=100
-)
 
-llm_chain = prompt | llm
+def get_response(persona: str, message: str) -> Tuple[str, int]:
+    prompt = PromptTemplate(
+        input_variables=["persona", "message"],
+        template=template
+    )
+    try:
+        llm = ChatOpenAI(
+            model="gpt-4o",
+            openai_api_key=os.getenv("OPENAI_API_KEY"),
+            temperature=0.7,
+            max_tokens=100
+        )
 
-
-def get_response(persona: str, message: str) -> str:
-    return llm_chain.invoke({"persona": persona, "message": message}).content
+        llm_chain = prompt | llm
+        response = llm_chain.invoke({"persona": persona, "message": message})
+        return response.content, 200
+    except ValidationError as e:
+        return str(e), 403
 
 
 # You can use the same file to test
@@ -51,4 +56,4 @@ if __name__ == "__main__":
             break
         message = input("Message: ")
         response = get_response(persona, message)
-        print(f"{response}")
+        print(f"{response[0]}")
